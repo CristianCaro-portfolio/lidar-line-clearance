@@ -1,0 +1,15 @@
+# Full size demo corridor: about 1.5 km, six spans, 3 M points.
+scene:
+  seed: 7
+  n_spans: 6
+pipeline:
+  clearance:
+    violation_m: 3.0
+    warning_m: 5.0
+    design_sag_factor: 1.25
+    design_blowout_deg: 20.0
+  quality:
+    expected_wires_per_span: 4
+lakehouse:
+  warehouse: warehouse
+  namespace: grid

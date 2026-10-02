@@ -1,0 +1,15 @@
+# Small corridor for CI and quick checks: two short spans, thinner point cloud.
+scene:
+  seed: 11
+  n_spans: 2
+  span_length_m: [150.0, 180.0]
+  ground_density_pts_m2: 10.0
+  vegetation_density_pts_m2: 30.0
+  wire_density_pts_m: 8.0
+  encroaching_trees_per_span: 3.0
+pipeline:
+  quality:
+    expected_wires_per_span: 4
+lakehouse:
+  warehouse: warehouse
+  namespace: grid
