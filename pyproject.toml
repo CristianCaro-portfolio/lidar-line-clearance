@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lidar-line-clearance"
+version = "0.1.0"
+description = "Drone LiDAR pipeline that measures vegetation clearance around power lines and lands the findings in an Iceberg table"
+readme = "README.md"
+requires-python = ">=3.10,<3.14"
+license = { text = "MIT" }
+authors = [{ name = "Cristian Caro" }]
+dependencies = [
+    "numpy>=1.26",
+    "scipy>=1.11",
+    "open3d-cpu>=0.19; platform_system == 'Linux'",
+    "open3d>=0.19; platform_system != 'Linux'",
+    "laspy>=2.5",
+    "polars>=1.0",
+    "pyarrow>=18",
+    "pyiceberg[sql-sqlite]>=0.12",
+    "shapely>=2.0",
+    "pydantic>=2.5",
+    "pyyaml>=6.0",
+    "typer>=0.12",
+    "matplotlib>=3.8",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.6"]
+laz = ["lazrs>=0.6"]
+
+[project.scripts]
+lineclear = "line_clearance.cli:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+# E741: l is the usual symbol for distance along a wire, B008: typer defaults
+ignore = ["B008", "E741"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
