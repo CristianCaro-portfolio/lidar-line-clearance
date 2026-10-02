@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: System libraries for Open3D
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgl1 libgomp1 libegl1
+
+      - name: Install
+        run: pip install -e ".[dev]"
+
+      - name: Lint
+        run: |
+          ruff check src tests
+          ruff format --check src tests
+
+      - name: Tests
+        run: pytest
+
+      - name: Smoke run
+        run: |
+          lineclear demo --workdir demo -c configs/smoke.yaml
+          lineclear findings survey_2026 --warehouse demo/warehouse
+          lineclear history findings --warehouse demo/warehouse
+          test -s demo/survey_2026.png
